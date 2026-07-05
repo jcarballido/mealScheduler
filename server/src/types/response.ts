@@ -1,28 +1,20 @@
-export type ResponseStatus = 'success' | 'failure';
-
-export interface ResponseError {
-  code: string;
-  message: string;
+type ResponseError = {
+  code: string,
+  message: string
 }
 
-export interface ApiResponse<T> {
-  status: ResponseStatus;
-  data: T | null;
-  error: null | ResponseError;
+type SuccessResponse<T> = {
+  status: "success",
+  data: T,
+  error: null
 }
 
-export function success<T>(data: T): ApiResponse<T> {
-  return {
-    status: 'success',
-    data,
-    error: null,
-  };
+type ErrorResponse = {
+  status: "error",
+  data: null,
+  error: ResponseError
 }
 
-export function failure(code: string, message: string): ApiResponse<never> {
-  return {
-    status: 'failure',
-    data: null,
-    error: { code, message },
-  };
-}
+type ApiResponse<T> = 
+  | SuccessResponse<T>
+  | ErrorResponse
